@@ -1,6 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 
+// state lecture
+// counter show when it works and when not
+// show how to update state in fn and class
+// lists?
+
+
 function App() {
   return (
     <div className="App">
