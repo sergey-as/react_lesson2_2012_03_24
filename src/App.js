@@ -16,6 +16,18 @@ const Header = ({counter}) => {
     )
 }
 
+const TodoItem = ({todo}) => (
+    <>
+        <div>
+            {todo.title}
+            <br/>
+            {todo.content}
+        </div>
+        <br/>
+    </>
+)
+
+
 // class App extends Component {
 //     state = {
 //         counter: 0,
@@ -59,6 +71,8 @@ const Header = ({counter}) => {
 // }
 
 function App() {
+    console.log('parent rerender');
+
     // const counter = 0;
     // let counter = 0;
     // const [counter, setCounter] = useState(0);
@@ -73,7 +87,12 @@ function App() {
     const [state, setState] = useState({
         counter: 0,
         isHeaderVisible: true,
-        todos: ['hello', 'wold'],
+        // todos: ['hello', 'wold'],
+        todos: [
+            {id: 1, title: 'Hello', content: 'React'},
+            {id: 2, title: 'Bye', content: 'React'},
+            {id: 3, title: 'Hi', content: 'React'},
+        ],
     })
 
     // const clickHandler = () => {
@@ -92,35 +111,63 @@ function App() {
     const clickHandler = () => {
         setState({
             ...state,
-            counter: setState.counter + 1
+            counter: state.counter + 1
         })
-
     }
 
-    console.log('parent rerender');
-
     const toggleHeader = () => {
-        setIsHeaderVisible(!isHeaderVisible);
+        setState({
+            ...state,
+            isHeaderVisible: !state.isHeaderVisible
+        })
     }
 
     const changeSmthInTodo = () => {
-        const newArr = [...todos];
-        newArr[0] = Math.random();
-        setTodos(newArr);
+        const newArr = [...state.todos];
+        // newArr[0] = Math.random();
+
+        // newArr[0].title = Math.random();
+        newArr[0] = {id: newArr[0].id, title: Math.random(), content: newArr[0].content};
+
+        setState({
+            ...state,
+            todos: newArr
+        })
     }
 
     return (
         <div className="App">
-            {isHeaderVisible && <Header counter={counter}/>}
+            {state.isHeaderVisible && <Header counter={state.counter}/>}
             <h2>
-                {counter}
+                {state.counter}
             </h2>
             <button onClick={clickHandler}>inc</button>
             <button onClick={toggleHeader}>toggle header</button>
             <button onClick={changeSmthInTodo}>change smth in todo</button>
 
-            <div>{todos[0]}</div>
-            <div>{todos[1]}</div>
+            <>
+                {/*<div>{state.todos[0]}</div>*/}
+                {/*<div>{state.todos[1]}</div>*/}
+            </>
+
+            <>
+                {/*<div>*/}
+                {/*    {state.todos[0].title}*/}
+                {/*    <br/>*/}
+                {/*    {state.todos[0].content}*/}
+                {/*</div>*/}
+                {/*<br/>*/}
+                {/*<div>*/}
+                {/*    {state.todos[1].title}*/}
+                {/*    <br/>*/}
+                {/*    {state.todos[1].content}*/}
+                {/*</div>*/}
+            </>
+
+            {/*{state.todos.map(todo => (*/}
+            {state.todos
+                .filter(el => el.id <= 2)
+                .map(todo => (<TodoItem key={todo.id} todo={todo}/>))}
         </div>
     );
 }
